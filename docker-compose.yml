@@ -6,6 +6,8 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
       - ./initdb:/docker-entrypoint-initdb.d
+    ports:
+      - ${POSTGRES_PORT}:5432
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -18,7 +20,15 @@ services:
     build: .
     volumes:
       - ./dist:/usr/src/app
+    links:
+      - db:${POSTGRES_HOST}
     ports:
       - 8080:3000
+    environment:
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
     depends_on:
       - db
