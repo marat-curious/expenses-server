@@ -24,5 +24,11 @@ services:
       - db:${POSTGRES_HOST}
     ports:
       - 8080:3000
+    environment:
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
     depends_on:
       - db
