@@ -9,4 +9,5 @@ psql -v ON_ERROR_STOP=1 --username "$DB_USER" --dbname "$DB_NAME" <<-EOSQL
     salt varchar(24) NOT NULL,
     hash varchar(60) NOT NULL
   );
+  INSERT INTO users (username, salt, hash) VALUES ('test', 'tsalt', 'thash');
 EOSQL

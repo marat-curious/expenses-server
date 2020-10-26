@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from 'express';
 import UserModel from '../models/user';
 import UserService from '../services/user';
 
@@ -6,9 +7,15 @@ export default class UserController {
 
   constructor() {
     this.userService = new UserService(new UserModel());
+    this.getList = this.getList.bind(this);
   }
 
-  getList() {
-    return this.userService.getList();
+  async getList(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const list = await this.userService.getList();
+      res.send(JSON.stringify(list));
+    } catch (e) {
+      next(e);
+    }
   }
 }

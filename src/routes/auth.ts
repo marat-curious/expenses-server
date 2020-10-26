@@ -4,11 +4,11 @@ import { generateToken } from '../controllers/auth';
 import UserController from '../controllers/user';
 
 const router = express.Router();
+const controller = new UserController();
+
+router.get('/list', controller.getList);
 
 router.get('/login', (req, res) => {
-  const controller = new UserController();
-  console.log(controller.getList());
-
   const token = generateToken('pass');
   res.send(token);
 });
