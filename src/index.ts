@@ -1,14 +1,13 @@
 import * as path from 'path';
 import * as express from 'express';
-
-import auth from './routes/auth';
+import routes from './routes';
 
 const app = express();
 const port = 3000;
 
+app.use(express.json());
+app.use('/api', routes);
 app.get('/', (req, res) => res.send('Application'));
-
-app.use('/api', auth);
 
 app.listen(port, () => {
   console.log(`app listening at http://localhost:${port}`);
