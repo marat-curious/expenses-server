@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import UserModel from '../models/user';
 
 export default class UserService {
@@ -5,6 +6,13 @@ export default class UserService {
 
   constructor(userModel: UserModel) {
     this.userModel = userModel;
+  }
+
+  async create(user: string, password: string) {
+    const salt = await bcrypt.genSalt();
+    const hash = await bcrypt.hash(password, salt);
+    const { rows } = await this.userModel.create([user, salt, hash]);
+    return rows;
   }
 
   async getList() {
