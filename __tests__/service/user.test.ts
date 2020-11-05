@@ -13,20 +13,47 @@ jest.mock('@/models/user', () => {
   });
 });
 
-describe("User service", () => {
-  it('"create" method generate salt, hash and call UserModel create method', async () => {
-    expect.assertions(3);
-    const salt = 'randomSaltString';
-    const hash = 'randomHashString';
+describe('User service', () => {
+  describe('"create" method', () => {
+    it('calls bcrypt\'s "genSalt" method', async () => {
+      expect.assertions(1);
 
-    bcrypt.genSalt.mockResolvedValue(salt);
-    bcrypt.hash.mockResolvedValue(hash);
+      bcrypt.genSalt.mockResolvedValue('');
 
-    const service = new UserService(new UserModel());
-    await service.create();
+      const service = new UserService(new UserModel());
+      await service.create();
 
-    expect(bcrypt.genSalt).toHaveBeenCalled();
-    expect(bcrypt.hash).toHaveBeenCalled();
-    expect(mockFun).toHaveBeenCalled();
+      expect(bcrypt.genSalt).toHaveBeenCalled();
+    });
+
+    it('calls bcrypt\'s "hash" method', async () => {
+      expect.assertions(1);
+
+      const salt = 'salt';
+      const password = 'password';
+      bcrypt.genSalt.mockResolvedValue(salt);
+      bcrypt.hash.mockResolvedValue('');
+
+      const service = new UserService(new UserModel());
+      await service.create('', password);
+
+      expect(bcrypt.hash).toHaveBeenCalledWith(password, salt);
+    });
+
+    it('calls UserModel\'s "create" method', async () => {
+      expect.assertions(1);
+
+      const user = 'user';
+      const password = 'password';
+      const salt = 'salt';
+      const hash = 'hash';
+      bcrypt.genSalt.mockResolvedValue(salt);
+      bcrypt.hash.mockResolvedValue(hash);
+
+      const service = new UserService(new UserModel());
+      await service.create(user, password);
+
+      expect(mockFun).toHaveBeenCalledWith(expect.arrayContaining([user, salt, hash]));
+    });
   });
 });
