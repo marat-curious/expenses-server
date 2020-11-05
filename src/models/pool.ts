@@ -16,4 +16,4 @@ export default abstract class PoolModel {
   query(query: string, params: string[]) {
     return this.pool.query(query, params);
   }
-};
+}

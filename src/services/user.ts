@@ -31,4 +31,4 @@ export default class UserService implements IUserService {
     const { rows } = await this.userModel.getList();
     return rows;
   }
-};
+}

@@ -13,4 +13,4 @@ export default class UserModel extends PoolModel {
   getList(params = []) {
     return this.query('SELECT * FROM users', params);
   }
-};
+}
