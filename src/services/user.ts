@@ -27,8 +27,8 @@ export default class UserService implements IUserService {
     return rows;
   }
 
-  async getList() {
+  async getList(): Promise<string[]> {
     const { rows } = await this.userModel.getList();
     return rows;
   }
-};
+}
