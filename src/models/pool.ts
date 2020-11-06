@@ -1,6 +1,10 @@
-import { Pool } from 'pg';
+import { Pool, QueryResult } from 'pg';
 
-export default abstract class PoolModel {
+export interface IPoolModel {
+  query(query: string, params: string[]): Promise<QueryResult>;
+}
+
+export abstract class PoolModel implements IPoolModel {
   private pool: Pool;
 
   constructor() {
@@ -13,7 +17,7 @@ export default abstract class PoolModel {
     });
   }
 
-  query(query: string, params: string[]) {
+  query(query: string, params: string[]): Promise<QueryResult> {
     return this.pool.query(query, params);
   }
 }
